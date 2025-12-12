@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-zinc-900 text-white">
+    <!-- Page container anchored to top -->
+    <div class="max-w-3xl mx-auto px-4 pt-8">
+      <div class="w-full bg-zinc-800/60 backdrop-blur rounded-xl shadow-lg p-6">
+        <h1 class="text-2xl font-semibold tracking-tight mb-1">Get in touch</h1>
+        <p class="text-zinc-400 mb-6">We usually respond within 24 hours.</p>
+
+        <form action="/create" method="post" class="space-y-4">
+          <div>
+            <label for="title" class="block text-sm text-zinc-300 mb-1"
+              >Title</label
+            >
+            <input
+              id="title"
+              name="title"
+              type="text"
+              class="w-full h-11 bg-zinc-800 border border-zinc-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 outline-none text-white px-3 rounded-md placeholder:text-zinc-500 transition"
+              placeholder="Task title"
+              required
+            />
+          </div>
+
+          <div>
+            <label for="description" class="block text-sm text-zinc-300 mb-1"
+              >Description</label
+            >
+            <textarea
+              id="description"
+              name="description"
+              rows="6"
+              class="w-full bg-zinc-800 border border-zinc-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 outline-none text-white px-3 py-2 rounded-md placeholder:text-zinc-500 transition resize-y"
+              placeholder="Task details"
+              required
+            ></textarea>
+          </div>
+
+          <div>
+            <label for="status" class="block text-sm text-zinc-300 mb-1"
+              >Status</label
+            >
+            <select
+              id="status"
+              name="status"
+              class="w-full h-11 bg-zinc-800 border border-zinc-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 outline-none text-white px-3 rounded-md transition"
+            >
+              <option value="Pending">Pending</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Done">Done</option>
+            </select>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full h-11 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium rounded-md transition shadow-sm"
+          >
+            create task
+          </button>
+        </form>
+      </div>
+
+      <!-- Tasks section -->
+      <section class="mt-8">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold">Tasks</h2>
+          <span class="text-xs text-zinc-400">Rendered below as cards</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <% if (Array.isArray(files) && files.length > 0) { %> <%
+          files.forEach(function (val) { const title =
+          String(val).replace(/\.txt$/,''); const preview = (snippets &&
+          snippets[val]) ? snippets[val] : 'No description available.'; %>
+          <article
+            class="bg-zinc-800/60 rounded-lg p-4 border border-zinc-700 shadow"
+          >
+            <div class="flex items-start justify-between">
+              <h3 class="text-lg font-medium"><%= title %></h3>
+              <span
+                class="text-xs px-2 py-1 rounded bg-blue-600/30 text-blue-300"
+                >Pending</span
+              >
+            </div>
+            <p class="text-zinc-300 mt-2"><%= preview %></p>
+            <div class="mt-3 flex gap-4">
+              <a
+                href="/files/<%= encodeURIComponent(title) %>"
+                class="text-sm text-blue-400 hover:text-blue-300 underline"
+                >Read more</a
+              >
+              <a
+                href="/files/<%= encodeURIComponent(title) %>/edit"
+                class="text-sm text-amber-400 hover:text-amber-300 underline"
+                >Edit</a
+              >
+            </div>
+          </article>
+          <% }); %> <% } else { %>
+          <h3 class="text-zinc-400">No task yet</h3>
+          <% } %>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
